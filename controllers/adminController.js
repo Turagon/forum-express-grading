@@ -1,5 +1,7 @@
 const db = require('../models')
 const fs = require('fs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
 
 const adminController = {
@@ -20,20 +22,18 @@ const adminController = {
     const { file } = req
     
     if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log(err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.create({ ...restaurantData, image: `/upload/${file.originalname}` })
-                  .then(restaurant => {
-                    req.flash('success_messages', 'restaurant was successfully created')
-                    return res.redirect('/admin/restaurants')
-                  })
-                  .catch(err => {
-                    const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-                    req.flash('error_messages', `${error}`)
-                    res.redirect('back')
-                  })
-        })
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({ ...restaurantData, image: img.data.link })
+                .then(restaurant => {
+                  req.flash('success_messages', 'restaurant was successfully created')
+                  return res.redirect('/admin/restaurants')
+                })
+                .catch(err => {
+                  const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
+                  req.flash('error_messages', `${error}`)
+                  res.redirect('back')
+                })
       })
     } else {
       return Restaurant.create({ ...restaurantData, image: null })
@@ -70,21 +70,20 @@ const adminController = {
     const restaurantId = req.params.id
     const { file } = req
     if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log(err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          updateData.image = `/upload/${file.originalname}`
-          return Restaurant.findByPk(restaurantId)
-                  .then(restaurant => {
-                    restaurant.update({ ...updateData })
-                      .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
-                      .catch(err => {
-                        const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-                        req.flash('error_messages', `${error}`)
-                        res.redirect('back')
-                      })
-                  })
-        })
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        updateData.image = img.data.link
+        return Restaurant.findByPk(restaurantId)
+                .then(restaurant => {
+                  restaurant.update({ ...updateData })
+                    .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
+                    .catch(err => {
+                      const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
+                      req.flash('error_messages', `${error}`)
+                      res.redirect('back')
+                    })
+                })
+        
       }) 
     } else {
       return Restaurant.findByPk(req.params.id)
