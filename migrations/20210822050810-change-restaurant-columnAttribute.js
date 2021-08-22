@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('restaurants', 'name', {
+    await queryInterface.changeColumn('Restaurants', 'name', {
       type: Sequelize.STRING,
       allowNull: false,
       len: [1, 100]
@@ -10,7 +10,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('restaurants', 'name', {
+    await queryInterface.changeColumn('Restaurants', 'name', {
       type: Sequelize.STRING,
       allowNull: false,
       len: [1, 25]

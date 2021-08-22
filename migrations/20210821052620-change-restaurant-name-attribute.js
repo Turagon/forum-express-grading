@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('restaurants', 'name', {
+    await queryInterface.changeColumn('Restaurants', 'name', {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
@@ -12,7 +12,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('users', 'isAdmin', {
+    await queryInterface.changeColumn('Restaurants', 'name', {
       type: Sequelize.STRING,
       allowNull: false
     })

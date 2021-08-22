@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('users', 'isAdmin', {
+    await queryInterface.changeColumn('Users', 'isAdmin', {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: false
@@ -10,7 +10,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('users', 'isAdmin', {
+    await queryInterface.changeColumn('Users', 'isAdmin', {
       type: Sequelize.BOOLEAN,
       allowNull: false,
     })
