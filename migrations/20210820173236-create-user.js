@@ -31,7 +31,7 @@ module.exports = {
           msg: "Include uppercase, lowercase & number only"
         }
       },
-      isAdmin: {
+      admin: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
