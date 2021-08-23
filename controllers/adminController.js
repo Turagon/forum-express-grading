@@ -3,6 +3,7 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
+const User = db.User
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -107,6 +108,26 @@ const adminController = {
                   return res.redirect('/admin/restaurants')
                 })
             })
+  },
+
+  getUsers: (req, res) => {
+    return User.findAll({raw: true, nest: true})
+            .then(users => {
+              res.render('admin/users', { users })
+            })
+            .catch(err => console.log(err))
+  },
+
+  toggleAdmin: (req, res) => {
+    User.findByPk(req.params.id)
+      .then(user => {
+        user.update({isAdmin: !user.isAdmin})
+        .then(user => {
+          return res.redirect('/admin/users')
+        })
+        .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
   }
 }
 
