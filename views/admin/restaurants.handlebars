@@ -15,7 +15,7 @@
       <th scope="col">#</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="restaurants-list">
     {{#each restaurants}}
     <tr>
       <th scope="row">{{this.id}}</th>
@@ -31,9 +31,9 @@
             Edit
           </a>
         </button>
-        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Delete</button>
-        </form>
+        {{!-- <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;"> --}}
+          <button class="btn btn-link" id="delete-btn" data-id="{{this.id}}">Delete</button>
+        {{!-- </form> --}}
       </td>
     </tr>
     {{/each}}

@@ -36,6 +36,13 @@ const userController = {
     req.flash('success_messages', '登出成功！')
     req.logout()
     res.redirect('/signin')
+  },
+
+  // 以下暫時加上
+  getProfile: (req, res) => {
+    User.findByPk(req.params.id, { raw: true })
+      .then(user => res.render('profile', { user }))
+      .catch(err => console.log(err))
   }
 }
 
