@@ -9,7 +9,7 @@ if (restaurantsList) {
       form.action = `/admin/restaurants/${id}?_method=DELETE`
       myModal.show()
       form.addEventListener('click', event => {
-        if (event.target.classList.contains('delete-confirm')) {
+        if (event.target.classList.contains('delete-confirm') || event.target.classList.contains('delete-giveup')) {
           myModal.hide()
           myModal.dispose()
         }
