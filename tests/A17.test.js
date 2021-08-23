@@ -7,7 +7,7 @@ const app = require('../app')
 const routes = require('../routes/index')
 const db = require('../models')
 const helpers = require('../_helpers');
-
+// 修改了37, 75行 db.comment 跟使用的model name不同
 describe('# A17: 使用者權限管理', function() {
     
   context('# [顯示使用者清單]', () => {
