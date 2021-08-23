@@ -1,6 +1,4 @@
 'use strict';
-const bcrypt = require('bcryptjs')
-
 const {
   Model
 } = require('sequelize');
@@ -16,15 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    name: {
-      type: DataTypes.STRING,
-    },
-    email: {
-      type: DataTypes.STRING,
-    },
-    password: {
-      type: DataTypes.STRING,
-    },
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
     isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
