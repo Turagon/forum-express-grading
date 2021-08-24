@@ -9,31 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
-        isAlphanumeric: {
-          msg: "Include uppercase, lowercase & number only"
-        }
+        type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
-        isEmail: {
-          msg: "Invalid email format"
-        }
+        type: Sequelize.STRING
       },
       password: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        isAlphanumeric: {
-          msg: "Include uppercase, lowercase & number only"
-        }
+        type: Sequelize.STRING
       },
       isAdmin: {
-        allowNull: false,
         type: Sequelize.BOOLEAN,
+        default: false
       },
       createdAt: {
         allowNull: false,

@@ -4,6 +4,7 @@ const userController = require('../controllers/userController')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const helpers = require('../_helpers') 
+const { authenticate } = require('passport')
 
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
@@ -42,6 +43,9 @@ module.exports = (app, passport) => {
   app.get('/signin', userController.signInPage)
 
   app.get('/logout', userController.logout)
+
+  // 暫時加上的路由
+  app.get('/users/:id', authenticated, userController.getProfile)
 
   app.post('/signup', userController.signUp)
 
