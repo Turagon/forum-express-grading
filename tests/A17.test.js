@@ -23,9 +23,9 @@ describe('# A17: 使用者權限管理', function() {
     })
 
     it(" GET /admin/users ", (done) => {
-        request(app)
-          .get('/admin/users')
-          .end(function(err, res) {
+      request(app)
+      .get('/admin/users')
+      .end(function(err, res) {
             res.text.should.include('User1')
             done()
         });
