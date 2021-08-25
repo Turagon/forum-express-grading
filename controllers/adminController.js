@@ -16,7 +16,9 @@ const adminController = {
   },
 
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    return Category.findAll({ raw: true, nest: true })
+            .then(categories => res.render('admin/create', { categories }))
+            .catch(err => console.log(err))
   },
 
   postRestaurant: (req, res) => {
@@ -61,11 +63,15 @@ const adminController = {
   },
 
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {raw: true})
-            .then(restaurant => {
-              return res.render('admin/create', { restaurant })
-            })
-            .catch(err => console.log(err))
+    Category.findAll({ raw: true, nest: true })
+              .then(categories => {
+                return Restaurant.findByPk(req.params.id, {raw: true})
+                        .then(restaurant => {
+                          return res.render('admin/create', { restaurant, categories })
+                        })
+                        .catch(err => console.log(err))
+              })
+              .catch(err => console.log(err))
   },
 
   putRestaurant: (req, res) => {
@@ -79,7 +85,7 @@ const adminController = {
         return Restaurant.findByPk(restaurantId)
                 .then(restaurant => {
                   restaurant.update({ ...updateData })
-                    .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
+                  .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
                     .catch(err => {
                       const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
                       req.flash('error_messages', `${error}`)
