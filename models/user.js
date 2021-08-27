@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    }
+    },
+    image: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate: async (User, next) => {

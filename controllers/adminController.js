@@ -24,7 +24,6 @@ const adminController = {
   postRestaurant: (req, res) => {
     const restaurantData = req.body
     const { file } = req
-    
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {

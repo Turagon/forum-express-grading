@@ -1,4 +1,7 @@
 const db = require('../models')
+const fs = require('fs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const User = db.User
 
 const userController = {
@@ -38,11 +41,43 @@ const userController = {
     res.redirect('/signin')
   },
 
-  // 以下暫時加上
-  getProfile: (req, res) => {
+  getUser: (req, res) => {
     User.findByPk(req.params.id, { raw: true })
       .then(user => res.render('profile', { user }))
       .catch(err => console.log(err))
+  },
+
+  editUser: (req, res) => {
+    User.findByPk(req.params.id, { raw: true })
+      .then(user => res.render('editProfile', { user }))
+      .catch(err => console.log(err))
+  },
+
+  putUser: (req, res) => {
+    const userId = Number(req.params.id)
+    const updateData = req.body
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        updateData.image = img.data.link
+        return User.findByPk(userId)
+          .then(user => {
+            user.update({ ...updateData })
+              .then(user => res.redirect(`/users/${userId}`))
+              .catch(err => console.log(err))
+          })
+          .catch(err => console.log(err))
+      })
+    } else {
+      return User.findByPk(userId)
+        .then(user => {
+          user.update({ ...updateData })
+            .then(user => res.redirect(`/users/${userId}`))
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
   }
 }
 

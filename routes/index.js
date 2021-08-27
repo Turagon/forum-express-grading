@@ -52,8 +52,9 @@ module.exports = (app, passport) => {
 
   app.get('/logout', userController.logout)
 
-  // 暫時加上的路由
-  app.get('/users/:id', authenticated, userController.getProfile)
+  app.get('/users/:id', authenticated, userController.getUser)
+
+  app.get('/users/:id/edit', authenticated, userController.editUser)
 
   app.post('/signup', userController.signUp)
 
@@ -73,6 +74,8 @@ module.exports = (app, passport) => {
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
   app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
+
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 

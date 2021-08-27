@@ -1,9 +1,11 @@
-<h1>User Profile</h1>
-<h3>抱歉 本頁還沒建設完成 請見諒</h3>
-<br />
-<br />
+<div class="profile-container">
+  <div class="user-photo">
+    <img src="{{user.image}}" alt="user picture">
+  </div>
+  <div class="user-info">
+    <span>{{user.name}}</span>
+    <span>{{user.email}}</span>
+    <a href="/users/{{user.id}}/edit" class="edit-profile">Edit</a>
+  </div>
+</div>
 
-<ul>
-  <li>Name: {{user.name}}</li>
-  <li>Email: {{user.email}}</li>
-</ul>
