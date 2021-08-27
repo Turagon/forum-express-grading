@@ -2,6 +2,7 @@ const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
+const commentController = require('../controllers/commentController')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const helpers = require('../_helpers') 
@@ -43,6 +44,8 @@ module.exports = (app, passport) => {
   
   app.get('/restaurants', authenticated, restController.getRestaurants)
 
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+
   app.get('/signup', userController.signUpPage)
 
   app.get('/signin', userController.signInPage)
@@ -63,6 +66,8 @@ module.exports = (app, passport) => {
 
   app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
 
+  app.post('/comments', authenticated, commentController.postComment)
+
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
@@ -72,4 +77,6 @@ module.exports = (app, passport) => {
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 }
