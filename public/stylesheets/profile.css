@@ -1,0 +1,29 @@
+.profile-box {
+  display: flex;
+  margin-bottom: 3%;
+}
+
+.user-photo {
+  width: 40%;
+}
+
+.user-photo img {
+  max-width: 100%;
+  height: auto;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 3%;
+}
+
+.commented {
+  display: flex;
+  justify-content: space-around;
+}
+
+.commented img {
+  max-width: 80%;
+  height: auto;
+}

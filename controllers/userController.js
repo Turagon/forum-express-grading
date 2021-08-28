@@ -3,6 +3,8 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const User = db.User
+const Restaurant = db.Restaurant
+const Comment = db.Comment
 
 const userController = {
   signUpPage: (req, res) => {
@@ -42,9 +44,27 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    User.findByPk(req.params.id, { raw: true })
-      .then(user => res.render('profile', { user }))
-      .catch(err => console.log(err))
+    const userId = req.params.id
+    User.findAndCountAll({where: {id: userId}, raw: true, nest: true, include: [
+      Comment, 
+      {model: Comment, include: [Restaurant]}
+    ]})
+    .then(users => {
+      const commentNum = users.count
+      const user = users.rows[0]
+      const comment = (users.rows).map(item => {
+        return item.Comments.Restaurant
+      })
+      const repeatCheck = new Set
+      const comments = []
+      for (let i = 0; i < comment.length; i++) {
+        if (!repeatCheck.has(comment[i].id)) {
+          comments.push(comment[i])
+          repeatCheck.add(comment[i].id)
+        }
+      }
+      res.render('profile', { user, comments, commentNum })
+    })
   },
 
   editUser: (req, res) => {

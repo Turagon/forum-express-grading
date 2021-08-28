@@ -44,10 +44,27 @@ const restController = {
         { model: Comment, include: [User] }
       ]})
       .then(restaurant => {
-        restaurant = restaurant.toJSON()
-        return res.render('restaurant', { restaurant })
+        restaurant.increment(['viewCounts'], {by: 1})
+          .then(restaurant => {
+            restaurant = restaurant.toJSON()
+            return res.render('restaurant', { restaurant })
+          })
       })
       .catch(err => console.log(err))
+  },
+
+  getDashboard: (req, res) => {
+    const restaurantId = req.params.id
+    Restaurant.findAndCountAll({ where: {id: restaurantId}, include: [
+      Category,
+      Comment
+    ]})
+    .then(restaurant => {
+      const commentNum = restaurant.count
+      restaurant = restaurant.rows[0].dataValues
+      return res.render('dashboard', { commentNum, restaurant })
+    })
+    .catch(err => console.log(err))
   }
 }
 

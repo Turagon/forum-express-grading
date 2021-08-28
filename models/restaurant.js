@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Categories',
         key: 'id'
       }
+    },
+    viewCounts: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   }, {
     sequelize,
