@@ -71,6 +71,10 @@ module.exports = (app, passport) => {
 
   app.post('/comments', authenticated, commentController.postComment)
 
+  app.post('/favorite/:id', authenticated, userController.addFavorite)
+
+  app.post('/like/:id', authenticated, userController.addLike)
+
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
@@ -84,4 +88,8 @@ module.exports = (app, passport) => {
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
+
+  app.delete('/favorite/:id', authenticated, userController.removeFavorite)
+
+  app.delete('/like/:id', authenticated, userController.removeLike)
 }
