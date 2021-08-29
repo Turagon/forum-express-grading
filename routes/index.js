@@ -54,6 +54,8 @@ module.exports = (app, passport) => {
 
   app.get('/logout', userController.logout)
 
+  app.get('/users/top', authenticated, userController.getTopUser)
+
   app.get('/users/:id', authenticated, userController.getUser)
 
   app.get('/users/:id/edit', authenticated, userController.editUser)
@@ -75,6 +77,8 @@ module.exports = (app, passport) => {
 
   app.post('/like/:id', authenticated, userController.addLike)
 
+  app.post('/following/:id', authenticated, userController.addFollowing)
+
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
@@ -92,4 +96,6 @@ module.exports = (app, passport) => {
   app.delete('/favorite/:id', authenticated, userController.removeFavorite)
 
   app.delete('/like/:id', authenticated, userController.removeLike)
+
+  app.delete('/following/:id', authenticated, userController.removeFollowing)
 }

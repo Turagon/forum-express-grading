@@ -15,7 +15,7 @@
   </div>
   <div class="col-md-8">
     <p>{{restaurant.description}}</p>
-    <a href="/restaurants/{{restaurant.id}}/dashboard" class="dashboard-btn">DashBoard</a>
+    <a href="/restaurants/{{restaurant.id}}/dashboard" class="dashboard-btn btn btn-primary">DashBoard</a>
     {{#if restaurant.isFavorited }}
     <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit"
         class="btn btn-danger">移除最愛</button></form>

@@ -5,6 +5,7 @@ const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
 const Like = db.Like
+const Followship = db.Followship
 
 passport.use(new LocalStrategy(
   {
@@ -28,7 +29,9 @@ passport.serializeUser((user, cb) => {
 passport.deserializeUser((id, cb) => {
   User.findByPk(id, { include: [
     { model: Restaurant, as: 'FavoritedRestaurants' },
-    { model: Restaurant, as: 'LikedRestaurants' }
+    { model: Restaurant, as: 'LikedRestaurants' },
+    { model: User, as: 'Followings' },
+    { model: User, as: 'Followers' }
   ] })
   .then(user => {
     user = user.toJSON() // 此處與影片示範不同
