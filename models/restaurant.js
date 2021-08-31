@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Restaurant.belongsTo(models.Category)  // 加入關聯設定
       Restaurant.hasMany(models.Comment)  // 加入關聯設定
+      Restaurant.hasMany(models.Favorite)  // 加入關聯設定
       Restaurant.belongsToMany(models.User, {
         through: models.Favorite,
         foreignKey: 'RestaurantId',

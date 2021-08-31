@@ -4,6 +4,8 @@ const Category = db.Category
 const User = db.User
 const Comment = db.Comment
 const Favorite = db.Favorite
+const Sequelize = require('sequelize')
+const Op = require('sequelize')
 const pageLimit = 10
 const favoriteCount = 10 //人氣餐廳顯示數量
 
@@ -76,17 +78,29 @@ const restController = {
   },
 
   getTopRestaurants: (req, res) => {
-    Restaurant.findAll({
-      include: [{
-        model: User, as: 'FavoritedUsers'
-      }]
+    Favorite.findAll({
+      raw: true,
+      limit: 10,
+      order: [[Sequelize.literal('FavoriteCount'), "DESC"]],
+      attributes: [
+        [Sequelize.fn('count', Sequelize.col('UserId')), 'FavoriteCount'],
+      ],
+      group: ['RestaurantId'],
+      include: [
+        {
+          model: Restaurant,
+          as: 'Restaurant'
+        }
+      ]
     })
     .then(restaurants => {
       restaurants = restaurants.map(item => ({
-        ...item.dataValues,
-        description: item.dataValues.description.substring(0, 20),
-        votes: item.FavoritedUsers.length,
-        voted: req.user.FavoritedRestaurants.map(d => d.id).includes(item.id)
+        id: item['Restaurant.id'],
+        name: item['Restaurant.name'],
+        image: item['Restaurant.image'],
+        description: item['Restaurant.description'].substring(0, 20),
+        votes: item.FavoriteCount,
+        voted: req.user.FavoritedRestaurants.map(d => d.id).includes(item['Restaurant.id'])
       }))
       restaurants = restaurants.sort((a, b) => b.votes - a.votes).slice(0, favoriteCount)
       return res.render('topRestaurant', { restaurants })
