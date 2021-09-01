@@ -27,3 +27,39 @@
   max-width: 80%;
   height: auto;
 }
+
+.user-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.user-details p {
+  height: 40px;
+}
+
+.pic-box {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pic-box a {
+  width: 15%;
+  height: auto;
+}
+
+.pic-box a img {
+  width: 90%;
+  height: auto;
+}
+
+.user-details-left {
+  width: 40%;
+}
+
+.user-details-right {
+  width: 60%;
+}
