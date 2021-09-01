@@ -19,7 +19,13 @@
         <p>{{followingsCount}} following(追蹤者)</p>
         <div class="following pic-box">
         {{#each followingsList}}
-          <a href="/users/{{this.dataValues.id}}" class="commented-restaurant"><img src="{{this.dataValues.image}}" alt=""></a>
+          <a href="/users/{{this.dataValues.id}}" class="commented-restaurant">
+          {{#if this.dataValues.image}}
+          <img src="{{this.dataValues.image}}" alt="">
+          {{else}}
+          暫無照片
+          {{/if}}
+          </a>
         {{/each}}
         </div>
       </div>
@@ -27,7 +33,13 @@
         <p>{{followersCount}} follower(追隨者)</p>
         <div class="follower pic-box">
         {{#each followersList}}
-          <a href="/users/{{this.dataValues.id}}" class="commented-restaurant"><img src="{{this.dataValues.image}}" alt=""></a>
+          <a href="/users/{{this.dataValues.id}}" class="commented-restaurant">
+          {{#if this.dataValues.image}}
+          <img src="{{this.dataValues.image}}" alt="">
+          {{else}}
+          暫無照片
+          {{/if}}
+          </a>
         {{/each}}
         </div>
       </div>
@@ -37,7 +49,13 @@
         <p>{{commentCount}} 已評論餐廳</p>
         <div class="commented pic-box">
         {{#each commentList}}
-          <a href="/restaurants/{{this.dataValues.id}}"><img src="{{this.dataValues.image}}" alt=""></a>
+          <a href="/restaurants/{{this.dataValues.id}}">
+          {{#if this.dataValues.image}}
+          <img src="{{this.dataValues.image}}" alt="">
+          {{else}}
+          暫無照片
+          {{/if}}
+          </a>
         {{/each}}
         </div>
       </div>
@@ -45,7 +63,13 @@
         <p>{{favoriteCount}} 已收藏餐廳</p>
         <div class="favorite pic-box">
         {{#each favoriteList}}
-          <a href="/restaurants/{{this.dataValues.id}}"><img src="{{this.dataValues.image}}" alt=""></a>
+          <a href="/restaurants/{{this.dataValues.id}}">
+          {{#if this.dataValues.image}}
+          <img src="{{this.dataValues.image}}" alt="">
+          {{else}}
+          暫無照片
+          {{/if}}
+          </a>
         {{/each}}
         </div>
       </div>

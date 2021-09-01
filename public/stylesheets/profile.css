@@ -43,7 +43,7 @@
   height: 150px;
   padding: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
 }
 
 .pic-box a {
