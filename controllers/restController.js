@@ -83,7 +83,7 @@ const restController = {
       limit: 10,
       order: [[Sequelize.literal('FavoriteCount'), "DESC"]],
       attributes: [
-        [Sequelize.fn('count', Sequelize.col('UserId')), 'FavoriteCount'],
+        [Sequelize.fn('count', Sequelize.col('UserId')), 'FavoriteCount']
       ],
       group: ['RestaurantId'],
       include: [
@@ -102,7 +102,6 @@ const restController = {
         votes: item.FavoriteCount,
         voted: req.user.FavoritedRestaurants.map(d => d.id).includes(item['Restaurant.id'])
       }))
-      restaurants = restaurants.sort((a, b) => b.votes - a.votes).slice(0, favoriteCount)
       return res.render('topRestaurant', { restaurants })
     })
   }
