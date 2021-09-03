@@ -2,6 +2,7 @@ const db = require('../models')
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const user = require('../models/user')
+const { date } = require('faker')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const User = db.User
 const Restaurant = db.Restaurant
@@ -9,6 +10,7 @@ const Comment = db.Comment
 const Favorite = db.Favorite
 const Like = db.Like
 const Followship = db.Followship
+const loginRecord = {}
 
 const userController = {
   signUpPage: (req, res) => {
@@ -22,8 +24,8 @@ const userController = {
       return res.redirect('/signup')
     }
     User.create({ ...userData})
-      .then(user => {
-        req.flash('success_messages', '成功註冊帳號！')
+    .then(user => {
+      req.flash('success_messages', '成功註冊帳號！')
         return res.redirect('/signin')
       })
       .catch(err => {
@@ -38,6 +40,10 @@ const userController = {
 
   signIn: (req, res) => {
     req.flash('success_messages', '成功登入！')
+    const loginKey = (Math.random().toString(12) + Math.random().toString(12))
+    req.session.loginKey = loginKey
+    loginRecord[req.session.passport.user] = loginKey
+    loginRecord['expireTime'] = (new Date).getTime() + 43200000
     res.redirect('/admin')
   },
 
@@ -200,4 +206,4 @@ const userController = {
   }
 }
 
-module.exports = userController
+module.exports = { userController, loginRecord }

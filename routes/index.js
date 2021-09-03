@@ -1,6 +1,6 @@
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
-const userController = require('../controllers/userController')
+const { userController, loginRecord } = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
 const commentController = require('../controllers/commentController')
 const multer = require('multer')
@@ -10,8 +10,12 @@ const { authenticate } = require('passport')
 
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
-    if (helpers.ensureAuthenticated(req)) {
-      return next()
+    const userId = req.session.passport ? req.session.passport.user: ''
+    let loginKey = req.session.loginKey
+    if (loginRecord[userId] && loginRecord[userId] === loginKey && loginRecord.expireTime >= (new Date).getTime()) {
+      if (helpers.ensureAuthenticated(req)) {
+        return next()
+      }
     }
     return res.redirect('/signin')
   }
