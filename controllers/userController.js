@@ -1,8 +1,7 @@
 const db = require('../models')
 const fs = require('fs')
 const imgur = require('imgur-node-api')
-const user = require('../models/user')
-const { date } = require('faker')
+const { Transaction } = require('sequelize')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const User = db.User
 const Restaurant = db.Restaurant
@@ -27,11 +26,11 @@ const userController = {
     .then(user => {
       req.flash('success_messages', '成功註冊帳號！')
         return res.redirect('/signin')
-      })
-      .catch(err => {
-        req.flash('error_messages', `${err.errors[0].message}`)
-        return res.redirect('/signup')
-      })
+    })
+    .catch(err => {
+      req.flash('error_messages', `${err.errors[0].message}`)
+      return res.redirect('/signup')
+    })
   },
 
   signInPage: (req, res) => {
@@ -54,7 +53,6 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    const userId = req.params.id
     User.findAll({
       where: { id: req.params.id },
       include: [
@@ -75,6 +73,7 @@ const userController = {
         const followersList = userData.Followers
         const followersCount = userData.Followers.length
         res.render('profile', { 
+          userData,
           favoriteList,
           commentList,
           followingsList,
@@ -120,12 +119,32 @@ const userController = {
     }
   },
 
-  addFavorite: (req, res) => {
-    return Favorite.create({
-      UserId: req.user.id,
-      RestaurantId: req.params.id
+  // addFavorite: (req, res) => {
+  //   return Favorite.create({
+  //     UserId: req.user.id,
+  //     RestaurantId: req.params.id
+  //   })
+  //   .then(favorite => res.redirect('back'))
+  // },
+  addFavorite: async(req, res) => {
+    const t = await db.sequelize.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
     })
-    .then(favorite => res.redirect('back'))
+    try {
+      const favorite = await Favorite.findOrCreate({
+        where: {
+          UserId: req.user.id,
+          RestaurantId: req.params.id,
+        },
+        transaction: t
+      })
+      await t.commit()
+      return res.redirect('back')
+    } catch (err) {
+      await t.rollback()
+      req.flash('error_messages', `加入失敗，請稍後再試`)
+      return res.redirect('back')
+    }
   },
 
   removeFavorite: (req, res) => {

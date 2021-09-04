@@ -1,11 +1,11 @@
 <div class="profile-container">
   <div class="profile-box">
     <div class="user-photo">
-      <img src="{{user.image}}" alt="user picture">
+      <img src="{{userData.image}}" alt="user picture">
     </div>
     <div class="user-info">
-      <span>{{user.name}}</span>
-      <span>{{user.email}}</span>
+      <span>{{userData.name}}</span>
+      <span>{{userData.email}}</span>
       <span>{{commentCount}} 已評論餐廳</span>
       <span>{{favoriteCount}} 已收藏餐廳</span>
       <span>{{followingsCount}} following(追蹤者)</span>
@@ -23,7 +23,9 @@
           {{#if this.dataValues.image}}
           <img src="{{this.dataValues.image}}" alt="">
           {{else}}
-          暫無照片
+          <img
+            src="https://thumbs.dreamstime.com/b/not-available-stamp-seal-watermark-distress-style-designed-rectangle-circles-stars-black-vector-rubber-print-title-138796185.jpg"
+            alt="">
           {{/if}}
           </a>
         {{/each}}
@@ -37,7 +39,9 @@
           {{#if this.dataValues.image}}
           <img src="{{this.dataValues.image}}" alt="">
           {{else}}
-          暫無照片
+          <img
+            src="https://thumbs.dreamstime.com/b/not-available-stamp-seal-watermark-distress-style-designed-rectangle-circles-stars-black-vector-rubber-print-title-138796185.jpg"
+            alt="">
           {{/if}}
           </a>
         {{/each}}
@@ -53,7 +57,9 @@
           {{#if this.dataValues.image}}
           <img src="{{this.dataValues.image}}" alt="">
           {{else}}
-          暫無照片
+          <img
+            src="https://thumbs.dreamstime.com/b/not-available-stamp-seal-watermark-distress-style-designed-rectangle-circles-stars-black-vector-rubber-print-title-138796185.jpg"
+            alt="">
           {{/if}}
           </a>
         {{/each}}
@@ -67,7 +73,7 @@
           {{#if this.dataValues.image}}
           <img src="{{this.dataValues.image}}" alt="">
           {{else}}
-          暫無照片
+          <img src="https://thumbs.dreamstime.com/b/not-available-stamp-seal-watermark-distress-style-designed-rectangle-circles-stars-black-vector-rubber-print-title-138796185.jpg" alt="">
           {{/if}}
           </a>
         {{/each}}

@@ -8,6 +8,7 @@ const Sequelize = require('sequelize')
 const Op = require('sequelize')
 const pageLimit = 10
 const favoriteCount = 10 //人氣餐廳顯示數量
+const userViewRecord = []
 
 const restController = {
   getRestaurants: (req, res) => {
@@ -52,13 +53,21 @@ const restController = {
         { model: User, as: 'LikedUsers'} 
       ]})
       .then(restaurant => {
-        restaurant.increment(['viewCounts'], {by: 1})
-          .then(restaurant => {
-            restaurant = restaurant.toJSON()
-            restaurant['isFavorited'] = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
-            restaurant['isLiked'] = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
-            return res.render('restaurant', { restaurant })
-          })
+        if (userViewRecord.includes(req.sessionID)) {
+          restaurant = restaurant.toJSON()
+          restaurant['isFavorited'] = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+          restaurant['isLiked'] = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
+          return res.render('restaurant', { restaurant })
+        } else {
+          restaurant.increment(['viewCounts'], {by: 1})
+            .then(restaurant => {
+              userViewRecord.push(req.sessionID)
+              restaurant = restaurant.toJSON()
+              restaurant['isFavorited'] = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+              restaurant['isLiked'] = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
+              return res.render('restaurant', { restaurant })
+            })
+        }
       })
       .catch(err => console.log(err))
   },
@@ -80,7 +89,7 @@ const restController = {
   getTopRestaurants: (req, res) => {
     Favorite.findAll({
       raw: true,
-      limit: 10,
+      limit: favoriteCount,
       order: [[Sequelize.literal('FavoriteCount'), "DESC"]],
       attributes: [
         [Sequelize.fn('count', Sequelize.col('UserId')), 'FavoriteCount']
