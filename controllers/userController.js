@@ -119,13 +119,6 @@ const userController = {
     }
   },
 
-  // addFavorite: (req, res) => {
-  //   return Favorite.create({
-  //     UserId: req.user.id,
-  //     RestaurantId: req.params.id
-  //   })
-  //   .then(favorite => res.redirect('back'))
-  // },
   addFavorite: async(req, res) => {
     const t = await db.sequelize.transaction({
       isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE

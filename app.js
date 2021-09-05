@@ -12,6 +12,7 @@ const passport = require('./config/passport')
 const db = require('./models')
 const app = express()
 const port = process.env.PORT || 3000
+const routes = require('./routes')
 
 app.engine('handlebars', handlebars({defaultLayout: 'main', helpers: require('./config/handlebars-helpers')}))
 app.set('view engine', 'handlebars')
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
   next()
 })
 
-require('./routes')(app, passport)
+app.use(routes)
+// require('./routes/routes')(app, passport)
 
 module.exports = app

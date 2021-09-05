@@ -5,14 +5,13 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
+const adminService = require('../services/adminService')
 
 const adminController = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ raw: true, nest: true, include: [Category] })
-      .then(restaurants => {
-        return res.render('admin/restaurants', { restaurants })
-      })
-      .catch(err => console.log(err))
+    adminService.getRestaurants(req, res, (data) => {
+      return res.render('admin/restaurants', data)
+    })
   },
 
   createRestaurant: (req, res) => {
@@ -53,12 +52,9 @@ const adminController = {
   },
 
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: [Category] })
-            .then(restaurant => {
-              restaurant = restaurant.toJSON()
-              return res.render('admin/restaurant', {restaurant})
-            })
-            .catch(err => console.log(err))
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)
+    })
   },
 
   editRestaurant: (req, res) => {
