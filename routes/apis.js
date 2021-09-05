@@ -1,7 +1,7 @@
 // const restController = require('../controllers/api/restController')
 const adminController = require('../controllers/api/adminController')
 // const { userController, loginRecord } = require('../controllers/api/userController')
-// const categoryController = require('../controllers/api/categoryController')
+const categoryController = require('../controllers/api/categoryController')
 // const commentController = require('../controllers/api/commentController')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -42,7 +42,7 @@ router.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.ed
 
 router.get('/admin/users', authenticatedAdmin, adminController.getUsers)
 
-// router.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+router.get('/admin/categories', categoryController.getCategories)
 
 // router.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
 

@@ -20,7 +20,24 @@ const adminService = {
         return cb({ restaurant })
       })
       .catch(err => console.log(err))
-  }
+  },
+
+  getCategories: (req, res, cb) => {
+    return Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        if (req.params.id) {
+          Category.findByPk(req.params.id)
+            .then(category => {
+              category = category.toJSON()
+              return cb({ categories, category })
+            })
+            .catch(err => console.log(err))
+        } else {
+          return cb({ categories })
+        }
+      })
+      .catch(err => console.log(err))
+  },
 }
 
 module.exports = adminService
