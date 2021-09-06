@@ -111,6 +111,17 @@ const adminService = {
         })
     }
   },
+
+  postCategory: (req, res, cb) => {
+    const name = req.body.name
+    if (!name) {
+      return cb({ status: 'error', message: 'Category name can not be blank' })
+    } else {
+      return Category.create({ name })
+        .then(category => cb({ status: 'success', category }))
+        .catch(err => console.log(err))
+    }
+  },
 }
 
 module.exports = adminService
