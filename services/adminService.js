@@ -122,6 +122,21 @@ const adminService = {
         .catch(err => console.log(err))
     }
   },
+
+  putCategory: (req, res, cb) => {
+    const name = req.body.name
+    if (!name) {
+      return cb({ status: 'error', message: 'Category name can not be blank' })
+    } else {
+      return Category.findByPk(req.params.id)
+        .then(category => {
+          category.update({ name })
+            .then(category => cb({ status: 'success', category }))
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
+  },
 }
 
 module.exports = adminService
