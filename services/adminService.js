@@ -137,6 +137,16 @@ const adminService = {
         .catch(err => console.log(err))
     }
   },
+
+  deleteCategory: (req, res, cb) => {
+    return Category.findByPk(req.params.id)
+      .then(category => {
+        category.destroy()
+          .then(category => cb({ status: 'success' }))
+          .catch(err => console.log(err))
+      })
+      .catch(err => cb({ status: 'error' }))
+  }
 }
 
 module.exports = adminService

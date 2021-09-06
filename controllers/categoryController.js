@@ -30,13 +30,14 @@ const categoryController = {
   },
 
   deleteCategory: (req, res) => {
-    return Category.findByPk(req.params.id)
-            .then(category => {
-              category.destroy()
-              .then(category => res.redirect('/admin/categories'))
-              .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
+    adminService.deleteCategory(req, res, (data) => {
+      if (data['status'] === 'success') {
+        return res.redirect('/admin/categories')
+      } else {
+        req.flash('error_messages', '刪除失敗')
+        return res.redirect('back')
+      }
+    })
   }
 }
 
