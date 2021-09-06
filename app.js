@@ -21,7 +21,8 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 app.use(methodOverride('_method'))
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }))

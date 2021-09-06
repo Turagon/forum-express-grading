@@ -20,34 +20,15 @@ const adminController = {
   },
 
   postRestaurant: (req, res) => {
-    const restaurantData = req.body
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.create({ ...restaurantData, image: img.data.link })
-          .then(restaurant => {
-            req.flash('success_messages', 'restaurant was successfully created')
-            return res.redirect('/admin/restaurants')
-          })
-          .catch(err => {
-            const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-            req.flash('error_messages', `${error}`)
-            res.redirect('back')
-          })
-      })
-    } else {
-      return Restaurant.create({ ...restaurantData, image: null })
-        .then((restaurant) => {
-          req.flash('success_messages', 'restaurant was successfully created')
-          res.redirect('/admin/restaurants')
-        })
-        .catch(err => {
-          const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-          req.flash('error_messages', `${error}`)
-          res.redirect('back')
-        })
-    }
+    adminService.postRestaurant(req, res, (data) => {
+      if (data['status' === 'success']) {
+        req.flash('success_messages', 'restaurant was successfully created')
+        res.redirect('/admin/restaurants')
+      } else {
+        req.flash('error_messages', `${data[message]}`)
+        res.redirect('back')
+      }
+    })
   },
 
   getRestaurant: (req, res) => {
@@ -69,47 +50,21 @@ const adminController = {
   },
 
   putRestaurant: (req, res) => {
-    const updateData = req.body
-    const restaurantId = req.params.id
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        updateData.image = img.data.link
-        return Restaurant.findByPk(restaurantId)
-          .then(restaurant => {
-            restaurant.update({ ...updateData })
-              .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
-              .catch(err => {
-                const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-                req.flash('error_messages', `${error}`)
-                res.redirect('back')
-              })
-          })
-
-      })
-    } else {
-      return Restaurant.findByPk(req.params.id)
-        .then(restaurant => {
-          restaurant.update({ ...updateData })
-            .then(restaurant => res.redirect(`/admin/restaurants/${restaurantId}`))
-            .catch(err => {
-              const error = err.errors[0].message === 'Validation len on name failed' ? 'Name should between 1 ~ 25 characters' : 'Input datatype might not be correct'
-              req.flash('error_messages', `${error}`)
-              res.redirect('back')
-            })
-        })
-    }
+    adminService.putRestaurant(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', 'restaurant was successfully edited')
+        res.redirect(`/admin/restaurants/${data['id']}`)
+      } else {
+        req.flash('error_messages', `${data[message]}`)
+        res.redirect('back')
+      }
+    })
   },
 
   deleteRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        restaurant.destroy()
-          .then(restaurant => {
-            return res.redirect('/admin/restaurants')
-          })
-      })
+    adminService.deleteRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
   },
 
   getUsers: (req, res) => {

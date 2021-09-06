@@ -73,7 +73,7 @@ router.get('/admin/categories', categoryController.getCategories)
 //   failureFlash: true
 // }), userController.signIn)
 
-router.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
+router.post('/admin/restaurants', upload.single('image'), adminController.postRestaurant)
 
 // router.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
 
@@ -93,7 +93,7 @@ router.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.t
 
 // router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
-router.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+router.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
 
 // router.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 

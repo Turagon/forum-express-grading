@@ -70,7 +70,7 @@ const restController = {
       Comment
     ]})
     .then(restaurant => {
-      const commentNum = restaurant.count
+      const commentNum = restaurant.rows[0].Comments.length
       restaurant = restaurant.rows[0].dataValues
       return res.render('dashboard', { commentNum, restaurant })
     })
